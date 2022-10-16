@@ -1,0 +1,24 @@
+hax_vm_fops と hax_vcpu_fops の2つモジュールが存在している
+
+- hax_vm_ioctl
+    - HAX_VM_IOCTL_VCPU_CREATE
+        - vcpu_create
+            - vcpu_vpid_alloc
+            - vcpu_init
+            - vcpu_prepare
+                - fill_common_vmcs
+                    - cpu_has_feature
+                    - ia32_rdmsr read vpid
+                    - load_vmcs
+                    - load_vmcs_common
+                        - vcpu_vmwrite_all
+                            - vmwrite(vcpu, GUEST_RSP, state->_rsp);
+- hax_vcpu_ioctl
+    - HAX_VCPU_IOCTL_RUN
+        - vcpu_execute
+            - cpu_vmx_execute
+                - cpu_vmx_run
+                    - vcpu_load_guest_state vcpu.c
+                        - load_guest_msr
+                        - load_guest_dr
+                        - load_dirty_vmcs_fields
